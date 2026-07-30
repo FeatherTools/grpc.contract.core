@@ -11,7 +11,6 @@ jobs:
 
     permissions:
       contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v6
@@ -21,10 +20,8 @@ jobs:
         with:
           dotnet-version: 10.x
 
-      - name: Publish package
+      - name: Publish to NuGet.org
         env:
-          PRIVATE_FEED_USER: ${{ github.repository_owner }}
-          PRIVATE_FEED_PASS: ${{ secrets.GITHUB_TOKEN }}
-          NUGET_SERVER_ORGANIZATION: ${{ github.repository_owner }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           DOTNET_ROLL_FORWARD: latestMajor
         run: ./build.sh -t publish no-lint
