@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package feather.core;
+
+option csharp_namespace = "Feather.Contracts";
+option php_namespace = "Feather\\Contracts";
+
+// Generic types
+
+message Error {
+  string name    = 1;
+  string message = 2;
+}
+
+message CorrelationId {
+  string id = 1;
+}
+
+message Timestamp {
+  int64 unix_timestamp = 1; // Unix timestamp in milliseconds
+}
+
+message Spot {
+  string zone   = 1;
+  string bucket = 2;
+}
+
+message Instance {
+  string instance = 1;
+}
+
+message Box {
+  Instance instance = 1;
+  Spot     spot     = 2;
+}
+
+// Common message for chunking large content (e.g. user data files) in stream gRPC calls which expects the whole message for processing
+message SerializedForChunking {
+  bytes content = 1;
+}

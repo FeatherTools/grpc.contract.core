@@ -1,0 +1,27 @@
+name: PHP Tests and Lints
+
+on:
+    #push:
+    pull_request:
+    schedule:
+        - cron: "0 3 * * *"
+
+jobs:
+    codestyle:
+        name: "Code style and static analysis"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.5"
+                  extensions: mbstring, intl #, grpc # todo - enable, when grpc is stable for 8.5 and remove ignore
+                  tools: composer:v2
+
+            - name: Install dependencies
+              run: composer update --no-interaction --no-progress --ignore-platform-req=ext-grpc
+
+            - name: Run lints
+              run: composer lint

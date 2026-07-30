@@ -1,0 +1,56 @@
+{
+    "name": "feather/contracts",
+    "description": "Contracts for Feather.Grpc, used for gRPC communication between services.",
+    "license": "proprietary",
+    "type": "library",
+    "require": {
+        "php": ">=8.5",
+        "ext-grpc": "*",
+        "google/protobuf": "^4.33",
+        "spiral/roadrunner-cli": "^2.7",
+        "spiral/roadrunner-grpc": "^3.5"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.5",
+        "php-parallel-lint/php-parallel-lint": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Feather\\Contracts\\": "php/Feather/Contracts/",
+            "GPBMetadata\\": "php/GPBMetadata/"
+        }
+    },
+    "archive": {
+        "exclude": [
+            "/build",
+            "/bin",
+            "/docs",
+            "/obj",
+            "/proto",
+            "/tuc",
+            "/paket-files",
+            "*.csproj",
+            "*.sh",
+            "/paket.*"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "scripts": {
+        "all": [
+            "@lint"
+        ],
+        "fix": [
+            "@composer normalize"
+        ],
+        "lint": [
+            "vendor/bin/parallel-lint -j 10 ./php",
+            "@composer validate",
+            "@composer normalize --dry-run"
+        ]
+    }
+}
