@@ -1,7 +1,7 @@
 {
     "name": "feather/contracts",
     "description": "Contracts for Feather.Grpc, used for gRPC communication between services.",
-    "license": "proprietary",
+    "license": "MIT",
     "type": "library",
     "require": {
         "php": ">=8.5",
