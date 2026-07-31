@@ -1,7 +1,7 @@
 version: v2
 modules:
   - path: proto
-    name: buf.build/feathertools/core
+    name: buf.build/feathertools/contracts
 lint:
   use:
     - STANDARD

@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Feather\\Core\\V1\\": "gen/php/Feather/Core/V1/"
+            "Feather\\Contracts\\Core\\V1\\": "gen/php/Feather/Contracts/Core/V1/"
         }
     },
     "archive": {

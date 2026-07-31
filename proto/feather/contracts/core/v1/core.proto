@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package feather.core.v1;
+package feather.contracts.core.v1;
 
 // Generic types
 
