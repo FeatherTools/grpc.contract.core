@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 1.2.0 - 2026-07-31
 ### Changed
 - Renamed the package to `feather.contracts.core.v1` (module `buf.build/feathertools/contracts`, path `proto/feather/contracts/core/v1/core.proto`).
 - Generated namespaces are now .NET `Feather.Contracts.Core.V1` and PHP `Feather\Contracts\Core\V1`.
