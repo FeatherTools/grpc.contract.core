@@ -6,21 +6,21 @@
 
 > Core Protobuf contracts (generic, reusable message types) shared across Feather gRPC services — packaged for both .NET and PHP.
 
-This repository is the single source of truth for the low-level, domain-agnostic contracts used across Feather. The Protobuf schema in [`proto/feather/core/v1/core.proto`](proto/feather/core/v1/core.proto) is compiled into:
+This repository is the single source of truth for the low-level, domain-agnostic contracts used across Feather. The Protobuf schema in [`proto/feather/contracts/core/v1/core.proto`](proto/feather/contracts/core/v1/core.proto) is compiled into:
 
 - a **.NET** library published as the [`Feather.Contracts`](https://www.nuget.org/packages/Feather.Contracts) NuGet package,
 - a **PHP** package (`feather/contracts`) with generated message, client and RoadRunner server classes under [`gen/php/`](gen/php/), and
-- a **Protobuf module** published to the [Buf Schema Registry](https://buf.build/feathertools/core) (`buf.build/feathertools/core`).
+- a **Protobuf module** published to the [Buf Schema Registry](https://buf.build/feathertools/contracts) (`buf.build/feathertools/contracts`).
 
 It is designed to be consumed in three ways:
 
 1. As a **.NET dependency** in the `Feather.Grpc` library, providing the core message types.
 2. As a **PHP dependency** in the PHP contracts library, providing the same core types.
-3. **Directly in other `.proto` files**, by depending on the BSR module `buf.build/feathertools/core` and referencing the `feather.core.v1` types.
+3. **Directly in other `.proto` files**, by depending on the BSR module `buf.build/feathertools/contracts` and referencing the `feather.contracts.core.v1` types.
 
 ## Contracts
 
-All messages live in the `feather.core.v1` package ([`proto/feather/core/v1/core.proto`](proto/feather/core/v1/core.proto)):
+All messages live in the `feather.contracts.core.v1` package ([`proto/feather/contracts/core/v1/core.proto`](proto/feather/contracts/core/v1/core.proto)):
 
 | Message                 | Purpose                                                                        |
 | ----------------------- | ------------------------------------------------------------------------------ |
@@ -32,10 +32,10 @@ All messages live in the `feather.core.v1` package ([`proto/feather/core/v1/core
 | `Box`                   | An `Instance` bound to a `Spot`.                                               |
 | `SerializedForChunking` | Wrapper (`bytes content`) for chunking large payloads in streaming gRPC calls. |
 
-Generated namespaces (derived by Buf managed mode from the `feather.core.v1` package):
+Generated namespaces (derived by Buf managed mode from the `feather.contracts.core.v1` package):
 
-- .NET: `Feather.Core.V1`
-- PHP: `Feather\Core\V1` (messages) and `Feather\Core\V1\GPBMetadata` (metadata)
+- .NET: `Feather.Contracts.Core.V1`
+- PHP: `Feather\Contracts\Core\V1` (messages) and `Feather\Contracts\Core\V1\GPBMetadata` (metadata)
 
 ## Install
 
@@ -46,7 +46,7 @@ dotnet add package Feather.Contracts
 ```
 
 ```fsharp
-open Feather.Core.V1
+open Feather.Contracts.Core.V1
 
 let error = Error(Name = "NotFound", Message = "Instance not found")
 ```
@@ -73,7 +73,7 @@ composer require feather/contracts:dev-main
 ```
 
 ```php
-use Feather\Core\V1\Error;
+use Feather\Contracts\Core\V1\Error;
 
 $error = (new Error())->setName('NotFound')->setMessage('Instance not found');
 ```
@@ -85,19 +85,19 @@ Add the BSR module as a dependency in your `buf.yaml`:
 ```yaml
 version: v2
 deps:
-  - buf.build/feathertools/core
+  - buf.build/feathertools/contracts
 ```
 
-Then import and reference the `feather.core.v1` types:
+Then import and reference the `feather.contracts.core.v1` types:
 
 ```proto
 syntax = "proto3";
 
-import "feather/core/v1/core.proto";
+import "feather/contracts/core/v1/core.proto";
 
 message Envelope {
-  feather.core.v1.CorrelationId correlation_id = 1;
-  feather.core.v1.Error         error          = 2;
+  feather.contracts.core.v1.CorrelationId correlation_id = 1;
+  feather.contracts.core.v1.Error         error          = 2;
 }
 ```
 
@@ -124,7 +124,7 @@ Common flags: `no-lint`, `no-clean` to skip the respective steps.
 
 ## Working with the Protobuf schema
 
-[`proto/feather/core/v1/core.proto`](proto/feather/core/v1/core.proto) is the source of truth. After editing it:
+[`proto/feather/contracts/core/v1/core.proto`](proto/feather/contracts/core/v1/core.proto) is the source of truth. After editing it:
 
 1. **Lint** the schema:
 
@@ -132,23 +132,21 @@ Common flags: `no-lint`, `no-clean` to skip the respective steps.
    buf lint
    ```
 
-2. **.NET** classes are generated automatically at build time by `Grpc.Tools` (see [`Contracts.csproj`](Contracts.csproj)) — just run `./build.sh`.
-
-3. **PHP** classes (and the C# reference output) are regenerated with Buf using the remote plugins in [`buf.gen.yaml`](buf.gen.yaml):
+2. **.NET** and **PHP** classes are regenerated with Buf using the remote plugins in [`buf.gen.yaml`](buf.gen.yaml):
 
    ```sh
    buf generate
    ```
 
-   This produces PHP message, client and RoadRunner server classes under [`gen/php/`](gen/php/) (namespace `Feather\Core\V1`) and the C# under [`gen/csharp/`](gen/csharp/); both are committed to the repository. `buf build` only compiles the schema to an in-memory image; use `buf generate` to emit code.
+   This produces C# under [`gen/csharp/`](gen/csharp/) (namespace `Feather.Contracts.Core.V1`, compiled by [`Contracts.csproj`](Contracts.csproj)) and PHP message, client and RoadRunner server classes under [`gen/php/`](gen/php/) (namespace `Feather\Contracts\Core\V1`); both are committed to the repository. `buf build` only compiles the schema to an in-memory image; use `buf generate` to emit code.
 
    > **Before opening a PR**, run `buf generate` and commit the regenerated `gen/` files so they stay in sync with the schema in git.
 
-4. **Publish** the module to the Buf Schema Registry:
+3. **Publish** the module to the Buf Schema Registry:
 
    ```sh
    buf registry login   # first time only
-   buf push             # publishes buf.build/feathertools/core
+   buf push             # publishes buf.build/feathertools/contracts
    ```
 
 ### Proto conventions
@@ -160,15 +158,15 @@ Common flags: `no-lint`, `no-clean` to skip the respective steps.
 ## Repository layout
 
 ```
-proto/feather/core/v1/core.proto   # Source-of-truth Protobuf schema
-buf.yaml                           # Buf module (buf.build/feathertools/core), lint & breaking config
-buf.gen.yaml                       # Buf code generation (managed mode, remote plugins)
-Contracts.csproj                   # .NET package (Feather.Contracts), compiles gen/csharp
-composer.json                      # PHP package (feather/contracts), autoloads gen/php
-gen/csharp/                        # Generated C# classes (committed, compiled by Contracts.csproj)
-gen/php/                           # Generated PHP classes (committed, autoloaded by composer)
-build/                             # FAKE build project (F#)
-.github/workflows/                 # CI: net-tests, php-tests, proto-lint, net-publish, bsr-publish, pr-check
+proto/feather/contracts/core/v1/core.proto   # Source-of-truth Protobuf schema
+buf.yaml                                     # Buf module (buf.build/feathertools/contracts), lint & breaking config
+buf.gen.yaml                                 # Buf code generation (managed mode, remote plugins)
+Contracts.csproj                             # .NET package (Feather.Contracts), compiles gen/csharp
+composer.json                                # PHP package (feather/contracts), autoloads gen/php
+gen/csharp/                                  # Generated C# classes (committed, compiled by Contracts.csproj)
+gen/php/                                     # Generated PHP classes (committed, autoloaded by composer)
+build/                                       # FAKE build project (F#)
+.github/workflows/                           # CI: net-tests, php-tests, proto-lint, net-publish, bsr-publish, pr-check
 ```
 
 ## Releasing
