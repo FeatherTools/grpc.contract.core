@@ -1,0 +1,18 @@
+version: v2
+clean: true
+managed:
+  enabled: true # derive csharp_namespace / php_namespace from the package
+plugins:
+  # C# messages + gRPC
+  - remote: buf.build/protocolbuffers/csharp
+    out: gen/csharp
+  - remote: buf.build/grpc/csharp
+    out: gen/csharp
+  # PHP messages + RoadRunner gRPC (official BSR plugin)
+  - remote: buf.build/protocolbuffers/php
+    out: gen/php
+  - remote: buf.build/community/roadrunner-server-php-grpc
+    out: gen/php
+  # future: TypeScript / Java — add one line each
+inputs:
+  - directory: proto

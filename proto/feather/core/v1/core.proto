@@ -1,9 +1,6 @@
 syntax = "proto3";
 
-package feather.core;
-
-option csharp_namespace = "Feather.Contracts";
-option php_namespace = "Feather\\Contracts";
+package feather.core.v1;
 
 // Generic types
 
