@@ -16,8 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Feather\\Contracts\\": "php/Feather/Contracts/",
-            "GPBMetadata\\": "php/GPBMetadata/"
+            "Feather\\Core\\V1\\": "gen/php/Feather/Core/V1/"
         }
     },
     "archive": {
@@ -29,6 +28,7 @@
             "/proto",
             "/tuc",
             "/paket-files",
+            "/gen/csharp",
             "*.csproj",
             "*.sh",
             "/paket.*"
@@ -48,7 +48,7 @@
             "@composer normalize"
         ],
         "lint": [
-            "vendor/bin/parallel-lint -j 10 ./php",
+            "vendor/bin/parallel-lint -j 10 ./gen/php",
             "@composer validate",
             "@composer normalize --dry-run"
         ]

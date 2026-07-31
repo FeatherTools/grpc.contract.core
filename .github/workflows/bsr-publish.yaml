@@ -1,0 +1,22 @@
+name: BSR Publish
+
+on:
+  push:
+    tags:
+      - '[0-9]+\.[0-9]+\.[0-9]+'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Push to the Buf Schema Registry
+        uses: bufbuild/buf-action@v1
+        with:
+          token: ${{ secrets.BUF_TOKEN }}
+          push: true

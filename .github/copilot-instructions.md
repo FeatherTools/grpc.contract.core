@@ -4,12 +4,13 @@ This is the **primary** instruction file for AI coding agents. `AGENTS.md` and `
 
 ## What this repository is
 
-The single source of truth for generic, domain-agnostic Protobuf contracts shared across Feather gRPC services. The schema in `proto/core.proto` is compiled into two published packages:
+The single source of truth for generic, domain-agnostic Protobuf contracts shared across Feather gRPC services. The schema in `proto/feather/core/v1/core.proto` is compiled by `buf generate` into committed output under `gen/`, published as:
 
-- **.NET**: `Feather.Contracts` NuGet package (built from `Contracts.csproj`).
-- **PHP**: `feather/contracts` composer package, with generated classes committed under `php/`.
+- **.NET**: `Feather.Contracts` NuGet package (`Contracts.csproj` compiles `gen/csharp`).
+- **PHP**: `feather/contracts` composer package (autoloads `gen/php`).
+- **Protobuf module**: `buf.build/feathertools/core` on the Buf Schema Registry.
 
-It is consumed as a .NET dependency in `Feather.Grpc`, as a PHP dependency in the PHP contracts library, and by importing `proto/core.proto` directly into other `.proto` files.
+It is consumed as a .NET dependency in `Feather.Grpc`, as a PHP dependency in the PHP contracts library, and by depending on the BSR module in other `.proto` files.
 
 ## Golden rules
 
@@ -21,13 +22,13 @@ It is consumed as a .NET dependency in `Feather.Grpc`, as a PHP dependency in th
 
 ## Editing the schema
 
-After changing `proto/core.proto`:
+After changing `proto/feather/core/v1/core.proto`:
 
-1. Lint: `./bin/lint-proto.sh` (needs `brew install protolint`; config in `.protolint/.protolint.yaml`).
+1. Lint: `buf lint` (config in `buf.yaml`, STANDARD rule set).
 2. .NET classes regenerate automatically at build time via `Grpc.Tools` — run `./build.sh`.
-3. Regenerate committed PHP classes: `./bin/grpc-php.sh` (builds `grpc-generator.dockerfile`, runs `generate-both.sh` in the container). Commit the updated `php/` output.
+3. Regenerate committed classes: `buf generate` (remote plugins in `buf.gen.yaml`, managed mode) emits C# to `gen/csharp` and PHP to `gen/php`. Commit the updated `gen/` output. `buf build` only compiles the schema; use `buf generate` to emit code.
 
-**Before opening a PR**, always run `./bin/grpc-php.sh` and commit the regenerated `php/` files so they stay in sync with `proto/core.proto` in git.
+**Before opening a PR**, always run `buf generate` and commit the regenerated `gen/` files so they stay in sync with the schema in git.
 
 ### Proto naming conventions
 
@@ -35,7 +36,7 @@ After changing `proto/core.proto`:
 - Messages / enums: `UpperCamelCase`
 - Fields: `lower_snake_case`
 - Enum values: `UPPER_SNAKE_CASE`
-- Package stays `feather.core`; keep `csharp_namespace = "Feather.Contracts"` and `php_namespace = "Feather\\Contracts"`.
+- Package is `feather.core.v1`; do NOT set `csharp_namespace` / `php_namespace` — Buf managed mode derives them (`Feather.Core.V1`, `Feather\Core\V1`).
 
 ## Build & tooling
 
@@ -48,7 +49,7 @@ After changing `proto/core.proto`:
 
 - `net-tests.yaml` — .NET build & tests.
 - `php-tests.yaml` — PHP lint / static analysis.
-- `proto-lint.yaml` — protolint on the schema.
+- `proto-lint.yaml` — `buf lint` on the schema.
 - `net-publish.yaml` — publishes NuGet on a `MAJOR.MINOR.PATCH` tag push.
 - `pr-check.yaml` — blocks fixup commits; shellcheck.
 

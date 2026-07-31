@@ -7,13 +7,15 @@ on:
         - cron: "0 3 * * *"
 
 jobs:
-    protolint:
+    buf-lint:
         name: "Proto files linting"
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
 
-            - name: Run protolint
-              uses: plexsystems/protolint-action@v0.7.0
+            - uses: bufbuild/buf-action@v1
               with:
-                  configDirectory: .protolint
+                  setup_only: true
+
+            - name: Run buf lint
+              run: buf lint
