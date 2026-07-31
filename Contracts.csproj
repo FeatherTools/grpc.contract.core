@@ -6,6 +6,8 @@
     <PackageId>Feather.Contracts</PackageId>
     <Version>1.1.0</Version>
     <Nullable>enable</Nullable>
+    <!-- Only compile the buf-generated C# under gen/csharp (disable SDK's default **/*.cs glob). -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <RepositoryUrl>https://github.com/FeatherTools/grpc.contract.core.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/FeatherTools/grpc.contract.core</PackageProjectUrl>
