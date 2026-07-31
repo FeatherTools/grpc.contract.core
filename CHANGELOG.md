@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 1.1.0 - 2026-07-31
 ### Changed
 - Distribute the schema via the Buf Schema Registry (`buf.build/feathertools/core`); added `buf.yaml` and `buf.gen.yaml` (managed mode).
 - Moved `proto/core.proto` to `proto/feather/core/v1/core.proto` and bumped the package to `feather.core.v1`.
