@@ -2,6 +2,11 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+### Fixed
+- Pinned the PHP `php_metadata_namespace` to the standard protoc convention `GPBMetadata\Feather\Contracts\Core\V1` (instead of managed mode's `Feather\Contracts\Core\V1\GPBMetadata` default), so downstream contracts generated without managed mode can load the metadata class.
+
+### Changed
+- Added a `GPBMetadata\` PSR-4 autoload entry in `composer.json` for the relocated PHP metadata class.
 
 ## 1.2.0 - 2026-07-31
 ### Changed

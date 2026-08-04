@@ -2,6 +2,15 @@ version: v2
 clean: true
 managed:
   enabled: true # derive csharp_namespace / php_namespace from the package
+  override:
+    # Emit the PHP metadata class in the standard protoc convention
+    # (GPBMetadata\<Package>) instead of managed mode's default
+    # (<php_namespace>\GPBMetadata). Downstream contracts generated without
+    # managed mode import core.proto and reference
+    # \GPBMetadata\Feather\Contracts\Core\V1\Core::initOnce(), so the emitted
+    # class name must match that convention.
+    - file_option: php_metadata_namespace
+      value: GPBMetadata\Feather\Contracts\Core\V1
 plugins:
   # C# messages + gRPC
   - remote: buf.build/protocolbuffers/csharp
