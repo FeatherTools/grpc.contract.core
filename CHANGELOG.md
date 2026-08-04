@@ -2,6 +2,8 @@
 
 <!-- There is always Unreleased section on the top. Subsections (Add, Changed, Fix, Removed) should be Add as needed. -->
 ## Unreleased
+
+## 1.2.1 - 2026-08-04
 ### Fixed
 - Pinned the PHP `php_metadata_namespace` to the standard protoc convention `GPBMetadata\Feather\Contracts\Core\V1` (instead of managed mode's `Feather\Contracts\Core\V1\GPBMetadata` default), so downstream contracts generated without managed mode can load the metadata class.
 
