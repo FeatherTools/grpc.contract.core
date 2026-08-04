@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Feather\\Contracts\\Core\\V1\\": "gen/php/Feather/Contracts/Core/V1/"
+            "Feather\\Contracts\\Core\\V1\\": "gen/php/Feather/Contracts/Core/V1/",
+            "GPBMetadata\\": "gen/php/GPBMetadata/"
         }
     },
     "archive": {

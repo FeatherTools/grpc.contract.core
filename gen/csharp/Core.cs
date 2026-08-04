@@ -37,7 +37,7 @@ namespace Feather.Contracts.Core.V1 {
             "B2NvbnRlbnQYASABKAxSB2NvbnRlbnRCsQEKHWNvbS5mZWF0aGVyLmNvbnRy",
             "YWN0cy5jb3JlLnYxQglDb3JlUHJvdG9QAaICA0ZDQ6oCGUZlYXRoZXIuQ29u",
             "dHJhY3RzLkNvcmUuVjHKAhlGZWF0aGVyXENvbnRyYWN0c1xDb3JlXFYx4gIl",
-            "RmVhdGhlclxDb250cmFjdHNcQ29yZVxWMVxHUEJNZXRhZGF0YeoCHEZlYXRo",
+            "R1BCTWV0YWRhdGFcRmVhdGhlclxDb250cmFjdHNcQ29yZVxWMeoCHEZlYXRo",
             "ZXI6OkNvbnRyYWN0czo6Q29yZTo6VjFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },

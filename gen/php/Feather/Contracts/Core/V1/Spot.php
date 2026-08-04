@@ -34,7 +34,7 @@ class Spot extends \Google\Protobuf\Internal\Message
      * }
      */
     public function __construct($data = NULL) {
-        \Feather\Contracts\Core\V1\GPBMetadata\Core::initOnce();
+        \GPBMetadata\Feather\Contracts\Core\V1\Core::initOnce();
         parent::__construct($data);
     }
 

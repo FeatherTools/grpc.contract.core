@@ -149,6 +149,15 @@ Common flags: `no-lint`, `no-clean` to skip the respective steps.
    buf push             # publishes buf.build/feathertools/contracts
    ```
 
+### Managed mode
+
+Buf can decide the generated namespaces two ways, controlled in [`buf.gen.yaml`](buf.gen.yaml):
+
+- **Managed mode ON** (used here) — namespaces are **derived from the Protobuf package** and injected at generation time, so the `.proto` stays free of language-specific options. This is Buf's idiomatic default and the right choice when the package (`feather.contracts.core.v1`) already maps cleanly onto the desired namespaces (`Feather.Contracts.Core.V1`, `Feather\Contracts\Core\V1`).
+- **Managed mode OFF** — namespaces come from `option` lines written **inside the `.proto`** (or plain package-derived protoc defaults). Choose this only when you need a namespace scheme the package can't produce (e.g. a `Context.Contracts.System` layout that intentionally differs from the package path).
+
+This repository uses **managed mode ON** with a single override: `php_metadata_namespace` is pinned to the standard protoc convention `GPBMetadata\<Package>` (rather than managed mode's `<php_namespace>\GPBMetadata` default). This keeps the PHP metadata class name compatible with downstream contracts that import `core.proto` and are generated **without** managed mode. **Any project reusing these contracts should follow the same idea**: prefer managed mode on, and only add overrides when a name must interoperate with an external convention.
+
 ### Proto conventions
 
 - File name: `lower_snake_case`; messages: `UpperCamelCase`; fields: `lower_snake_case`; enum values: `UPPER_SNAKE_CASE`.
